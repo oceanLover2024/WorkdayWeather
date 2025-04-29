@@ -26,7 +26,7 @@ async function getCurrentData(cityName) {
   const RainArray = cityData.WeatherElement.find(
     (e) => e.ElementName === "3小時降雨機率"
   ).Time;
-
+  const now = new Date();
   const nowHour = new Date().getHours();
   //即時溫度
   const currentTemperatureData = temperatureArray.find((e) => {
@@ -34,31 +34,32 @@ async function getCurrentData(cityName) {
     return dataHour === nowHour;
   });
   const currentTemperature = currentTemperatureData.ElementValue[0].Temperature;
-  //console.log("即時溫度", currentTemperature);
+  console.log("即時溫度", currentTemperature);
   //即時濕度
   const currenthumidityData = humidityArray.find((e) => {
     const dataHour = new Date(e.DataTime).getHours();
     return dataHour === nowHour;
   });
   const currentHumidity = currenthumidityData.ElementValue[0].RelativeHumidity;
-  //console.log("即時濕度", currentHumidity);
+  console.log("即時濕度", currentHumidity);
   //即時天氣狀況
+  console.log("descriptionArray", descriptionArray);
   const currentDescriptionData = descriptionArray.find((e) => {
-    const startHour = new Date(e.StartTime).getHours();
-    const endHour = new Date(e.EndTime).getHours();
-    return startHour <= nowHour && endHour > nowHour;
+    const start = new Date(e.StartTime);
+    const end = new Date(e.EndTime);
+    return start <= now && now < end;
   });
   const currentDescription = currentDescriptionData.ElementValue[0].Weather;
-  //console.log("即時天氣狀況", currentDescription);
+  console.log("即時天氣狀況", currentDescription);
   //即時降雨率
   const currentRainData = RainArray.find((e) => {
-    const startHour = new Date(e.StartTime).getHours();
-    const endHour = new Date(e.EndTime).getHours();
-    return startHour <= nowHour && endHour > nowHour;
+    const start = new Date(e.StartTime);
+    const end = new Date(e.EndTime);
+    return start <= now && now < end;
   });
   const currentRain =
     currentRainData.ElementValue[0].ProbabilityOfPrecipitation;
-  //console.log("即時降雨率", currentRain);
+  console.log("即時降雨率", currentRain);
   return {
     currentTemperature,
     currentHumidity,
