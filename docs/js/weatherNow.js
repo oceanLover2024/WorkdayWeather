@@ -71,4 +71,5 @@ export async function getCurrentData(cityName) {
 // let answer = await getCurrentData("臺北市");
 // console.log("answer:", answer);
 //}
-//test();
+//
+// test();

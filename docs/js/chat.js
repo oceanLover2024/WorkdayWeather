@@ -1,4 +1,4 @@
-let url = "";
+let url = "https://workdayweather.onrender.com";
 function connect(onNewMessage, onClearMessages, onError) {
   const source = new EventSource(`${url}/api/stream`);
   source.addEventListener("new_message", (e) => {
