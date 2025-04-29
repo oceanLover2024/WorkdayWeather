@@ -5,7 +5,7 @@ async function fetchWeek() {
   const data = await res.json();
   return data.records.Locations[0].Location;
 }
-async function getWeekData(cityName) {
+export async function getWeekData(cityName) {
   const data = await fetchWeek();
   //console.log("完整資料:", data);
   const cityData = data.find((city) => city.LocationName.includes(cityName));
@@ -41,8 +41,8 @@ async function getWeekData(cityName) {
   return { weekTemperatures, weekDescriptions };
 }
 
-async function test() {
-  let answer = await getWeekData("臺北市");
-  console.log("answer:", answer);
-}
-test();
+//async function test() {
+// let answer = await getWeekData("臺北市");
+// console.log("answer:", answer);
+//}
+//test();

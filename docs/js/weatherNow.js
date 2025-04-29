@@ -6,9 +6,9 @@ async function fetchNow() {
   const data = await res.json();
   return data.records.Locations[0].Location;
 }
-async function getCurrentData(cityName) {
+export async function getCurrentData(cityName) {
   const data = await fetchNow();
-  console.log("完整陣列", data);
+  //console.log("完整陣列", data);
   const cityData = data.find((city) => city.LocationName.includes(cityName));
   if (!cityData) {
     console.log("無此縣市資料");
@@ -34,23 +34,23 @@ async function getCurrentData(cityName) {
     return dataHour === nowHour;
   });
   const currentTemperature = currentTemperatureData.ElementValue[0].Temperature;
-  console.log("即時溫度", currentTemperature);
+  //console.log("即時溫度", currentTemperature);
   //即時濕度
   const currenthumidityData = humidityArray.find((e) => {
     const dataHour = new Date(e.DataTime).getHours();
     return dataHour === nowHour;
   });
   const currentHumidity = currenthumidityData.ElementValue[0].RelativeHumidity;
-  console.log("即時濕度", currentHumidity);
+  //console.log("即時濕度", currentHumidity);
   //即時天氣狀況
-  console.log("descriptionArray", descriptionArray);
+
   const currentDescriptionData = descriptionArray.find((e) => {
     const start = new Date(e.StartTime);
     const end = new Date(e.EndTime);
     return start <= now && now < end;
   });
   const currentDescription = currentDescriptionData.ElementValue[0].Weather;
-  console.log("即時天氣狀況", currentDescription);
+  // console.log("即時天氣狀況", currentDescription);
   //即時降雨率
   const currentRainData = RainArray.find((e) => {
     const start = new Date(e.StartTime);
@@ -59,7 +59,7 @@ async function getCurrentData(cityName) {
   });
   const currentRain =
     currentRainData.ElementValue[0].ProbabilityOfPrecipitation;
-  console.log("即時降雨率", currentRain);
+  // console.log("即時降雨率", currentRain);
   return {
     currentTemperature,
     currentHumidity,
@@ -67,8 +67,8 @@ async function getCurrentData(cityName) {
     currentRain,
   };
 }
-async function test() {
-  let answer = await getCurrentData("臺北市");
-  console.log("answer:", answer);
-}
-test();
+//async function test() {
+// let answer = await getCurrentData("臺北市");
+// console.log("answer:", answer);
+//}
+//test();
