@@ -86,6 +86,8 @@ async def stop_clear_messages_task():
             print("背景任務已成功停止") 
         except Exception as e:
             print(f"停止背景任務時，發生意外錯誤: {e}") 
+    else:
+        print("背景任務無需停止 (可能未啟動或已完成)。") 
 
 
 async def clear_messages_daily():
@@ -93,8 +95,12 @@ async def clear_messages_daily():
         try:
             await check_messages()
             await asyncio.sleep(300)
-        except:
+        except asyncio.CancelledError:
+            print("背景任務已成功停止") 
+            raise
+        except Exception as e:
             await asyncio.sleep(300)
+            print(f"背景任務發生意外錯誤: {e}") 
 
 
 
