@@ -57,12 +57,7 @@ async def message_stream():
     try:
         while True:
             event = await queue.get()
-            yield {
-                "event": event["event"],
-                "data": event["data"]
-
-
-            }
+            yield f"event: {event['event']}\ndata: {event['data']}\n\n"
     except Exception as err:
         print(f"串流出現錯誤：{err}")
     finally:
