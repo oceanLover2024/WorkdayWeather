@@ -20,7 +20,11 @@ body {
   font-size: 16px;
   font-family: "Noto Sans TC", sans-serif;
   color: #333;
-  background-color: #f6f6f8;
+  background: linear-gradient(
+    180deg,
+    rgba(236, 240, 248, 1) 0%,
+    rgba(246, 246, 248, 1) 100%
+  );
   margin: 0;
   padding: 0;
   position: relative;
@@ -28,7 +32,7 @@ body {
 
 .content,
 a {
-  max-width: 1440px;
+  max-width: 1200px;
   margin: auto;
   box-sizing: border-box;
   color: #333;
@@ -39,7 +43,7 @@ header {
   display: flex;
   align-items: center;
 }
-header > h1 a {
+header > h1 {
   font-family: "Inknut Antiqua", serif;
   font-size: 18px;
 }
@@ -63,7 +67,7 @@ header > h1 a {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 20px;
+  gap: 10px;
 }
 
 /*----Map----*/
@@ -117,18 +121,22 @@ header > h1 a {
   background-color: #ffffff;
   border: 1px solid #c5c5c6;
   border-radius: 10px;
-  flex: 1;
   overflow: scroll;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+}
+#weather-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 #weather-info h2 {
-  font-size: 38px;
+  font-size: 32px;
   margin-left: 40px;
 }
 #weather-info .city-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
   position: relative;
 }
 .city-title::before {
@@ -138,29 +146,51 @@ header > h1 a {
   height: 35px;
   bottom: 0;
   left: 0;
-  transform: translate(-5%, -30%);
+  transform: translate(0%, -15%);
   background: url("../images/location.svg") no-repeat center/contain;
+}
+.city-info {
+  text-align: center;
+  width: 50%;
+  background: #fef3e1;
+  padding: 20px;
+  font-size: 18px;
+  border-radius: 8px;
+}
+.city-info-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
 }
 
 #weather-info .city-status {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 40px;
-  margin-bottom: 30px;
-  text-align: center;
+  justify-content: space-around;
 }
 #weather-info .city-status > p {
   font-family: "Poppins", sans-serif;
   font-size: 60px;
+  font-weight: 600;
 }
 .city-weather {
-  padding: 20px 40px;
+  flex: 0 0 40%;
+  padding: 40px 25px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(
+    180deg,
+    rgba(98, 184, 246, 1) 0%,
+    rgba(44, 121, 193, 1) 83%
+  );
+  background: #fff;
 }
 
 /*---聊天室---*/
 .chat-section {
+  flex: 0 0 60%;
   padding: 25px;
   display: flex;
   gap: 10px;
@@ -182,6 +212,8 @@ header > h1 a {
   font-size: 16px;
 }
 .chat-section_input button {
+  font-size: 16px;
+  white-space: nowrap;
   width: 16%;
   background-color: #6498fe;
   color: #fff;
@@ -209,9 +241,10 @@ header > h1 a {
 .msg {
   padding: 10px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 20px;
   color: #5e5e5e;
+  border-radius: 5px;
 }
 
 /*--一週氣象--*/
@@ -233,7 +266,7 @@ header > h1 a {
 .weekly-weather_container {
   display: flex;
   gap: 10px;
-  background: #f0f0f0;
+  background: #e4eaf8;
   padding: 12px;
   border-radius: 10px;
 }
@@ -257,8 +290,8 @@ header > h1 a {
   border-radius: 10px;
 }
 .weekly-weather_item svg {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
 }
 .weekly-weather_item svg path {
   transition: fill 0.2s ease-in-out;
@@ -305,6 +338,45 @@ canvas#background-canvas {
   padding: 0 20px 20px 20px;
   z-index: 1;
 }
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.background-dec {
+  position: absolute;
+  width: 630px;
+  height: 395px;
+  background: url(../images/dec-cloud.svg) no-repeat center/contain;
+  bottom: 0;
+  left: -4%;
+  animation: float 4s ease-in-out infinite;
+}
+.background-dec-2 {
+  position: absolute;
+  width: 315px;
+  height: 195px;
+  background: url(../images/dec-cloud-2.svg) no-repeat center/contain;
+  top: 50%;
+  left: 45%;
+  animation: float 6s ease-in-out infinite;
+}
+.background-dec-3 {
+  position: absolute;
+  width: 630px;
+  height: 395px;
+  background: url(../images/dec-cloud.svg) no-repeat center/contain;
+  top: 20%;
+  right: -7%;
+  animation: float 4s ease-in-out infinite;
+}
 
 @media (min-width: 601px) and (max-width: 1200px) {
   .main {
@@ -318,10 +390,17 @@ canvas#background-canvas {
     flex-direction: row;
     height: 100%;
   }
-  .city-weather {
-    padding: 40px;
+  .background-dec-2 {
+    display: none;
+  }
+  .city-info-container {
+    flex-direction: column;
+  }
+  .city-info {
+    width: 100%;
   }
 }
+
 @media (max-width: 600px) {
   header {
     margin-bottom: 40px;
@@ -341,33 +420,44 @@ canvas#background-canvas {
     flex-direction: column;
     height: 100%;
   }
-  .city-weather {
-    padding: 40px;
-  }
   .work-notice {
     width: 100%;
     top: 0;
     position: relative;
   }
   #weather-info .city-status {
-    padding: 0 20px;
     flex-direction: column;
   }
   .weekly-weather_container {
     flex-wrap: wrap;
-    justify-content: center;
   }
   .weekly-weather_item {
     width: 20%;
   }
   .chat-section {
     gap: 30px;
+    max-height: 80vh;
   }
-  .chat-section_input textarea,
-  .chat-section_input button {
+  .chat-section_input textarea {
     width: 100%;
   }
   .chat-section_input {
+    flex-direction: column;
+  }
+  .chat-section_input button {
+    width: 100%;
+  }
+  .background-dec,
+  .background-dec-2,
+  .background-dec-3 {
+    display: none;
+  }
+  .city-info-container {
+    flex-direction: column;
+  }
+  .city-info {
+    width: 100%;
+    display: flex;
     flex-direction: column;
   }
 }
