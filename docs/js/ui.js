@@ -5,11 +5,11 @@ import { startChat, handleSubmit } from "./chat.js";
 // 取得預設資訊
 document.addEventListener("DOMContentLoaded", async () => {
   const defaultCity = "臺北市";
+  renderRandomJokeNotice()
 
   try {
     const weatherData = await getCurrentData(defaultCity);
     renderWeatherInfo(defaultCity, weatherData);
-    renderWeatherNotice(weatherData.currentDescription);
 
     if (
         weatherData.currentDescription.includes("雷") &&
@@ -32,37 +32,59 @@ document.addEventListener("DOMContentLoaded", async () => {
   } 
 });
 
-// 出門提醒
+// 每日笑話
 const workdayNotice = document.querySelector(".work-notice_content")
-function renderWeatherNotice(description){
-    let emoji = "😎";
-    let message = "記得防曬和補充水分！";
 
-    if (description.includes("雷")) {
-        emoji = "😵‍💫";
-        message = "出門記得帶傘，小心雷雨！";
-    } else if (description.includes("雨")) {
-        emoji = "☔️";
-        message = "別忘了帶傘，避免淋濕喔";
-    } else if (description.includes("晴")) {
-        emoji = "😎";
-        message = "記得防曬和補充水分！";
-    } else if (description.includes("陰")) {
-        emoji = "🤩";
-        message = "天氣陰沉，保持好心情！";
-    } else if (description.includes("雲")) {
-        emoji = "🥳";
-        message = "雲多但舒適，今天也要加油～";
-    }
+const jokes = [
+  {
+    emoji: "🤯",
+    question: "Q. 白龍被揍會變成什麼？",
+    answer: "A: 青眼白龍",
+  },
+  {
+    emoji: "🐷",
+    question: "Q. 豬八戒過馬路會變什麼？",
+    answer: "A: 行八戒（行人）",
+  },
+  {
+    emoji: "😵‍💫",
+    question: "Q. MySQL真的是我的嗎？",
+    answer: "A: 不是",
+  },
+  {
+    emoji: "🤔",
+    question: "Q. 皮卡丘十天不洗澡會有什麼？",
+    answer: "A: 牙縫🦷🦷",
+  },
+  {
+    emoji: "📚",
+    question: "Q. 書店最怕什麼人？",
+    answer: "A: 文盲",
+  },
+  {
+    emoji: "🍣",
+    question: "Q. 念什麼系適合賣壽司？",
+    answer: "A: 美術系",
+  },
+  {
+    emoji: "🇺🇸",
+    question: "Q. 開心的川普（猜物品）",
+    answer: "A: 樂譜🎼",
+  }
+];
 
-    workdayNotice.innerHTML = `
-        <p style="font-size:45px">${emoji}</p>
-        <div>
-        <p style="margin: 0 0 8px 10px;">目前天氣：${description}</p>
-        <p style="background: #A9E4AB; padding: 5px 10px; border-radius: 200px; font-weight: 600">${message}</p>
-        </div>
-    `;
+function renderRandomJokeNotice() {
+  const joke = jokes[Math.floor(Math.random() * jokes.length)];
+
+  workdayNotice.innerHTML = `
+    <p style="font-size:45px">${joke.emoji}</p>
+    <div>
+      <p style="font-size: 18px; font-weight:600; margin-bottom: 10px;">${joke.question}</p>
+      <p>${joke.answer}</p>
+    </div>
+  `;
 }
+
 
 // 取得API即時氣象資訊
 const paths = document.querySelectorAll("#map a");
@@ -75,6 +97,9 @@ paths.forEach((path) => {
     try {
       const weatherData = await getCurrentData(cityName);
       renderWeatherInfo(cityName, weatherData);
+
+      const weekData = await getWeekData(cityName);
+      renderWeeklyWeather(weekData.weekTemperatures, weekData.weekDescriptions);
     } catch (error) {
       console.error(error);
       weatherInfo.innerHTML = "<p>載入失敗，請稍後再試。</p>";
@@ -85,20 +110,20 @@ paths.forEach((path) => {
 function getCurrentFormattedDate() {
   const now = new Date();
   const days = [
-    "星期日",
-    "星期一",
-    "星期二",
-    "星期三",
-    "星期四",
-    "星期五",
-    "星期六",
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thusdday",
+    "Friday",
+    "Saturday",
   ];
   const day = days[now.getDay()]; // 星期幾
 
   const month = String(now.getMonth() + 1).padStart(2, "0"); // 月份
   const date = String(now.getDate()).padStart(2, "0"); // 日期
 
-  return `${day} , ${month}/${date}`;
+  return `${day} ｜ ${month}.${date}`;
 }
 
 // 渲染即時資訊
@@ -118,12 +143,12 @@ function renderWeatherInfo(cityName, weatherData) {
         <p>${currentDatetime}</p>
       </div>
       <div class="city-status">
-        <img src="${iconUrl}" alt="${currentDescription}" style="width: 130px;" >    
+        <img src="${iconUrl}" alt="${currentDescription}" style="width: 110px;" >    
         <p>${currentTemperature} °C</p>  
       </div>
-      <div style="display: flex; justify-content: space-around;">
-        <p style="font-size: 18px">🌧️ 降雨率：${currentRain} %</p>
-        <p style="font-size: 18px">💧 濕度：${currentHumidity} %</p>
+      <div class="city-info-container">      
+        <p class="city-info">🌧️ 降雨率： <span style="font-family: 'Poppins';">${currentRain} %<span/></p>
+        <p class="city-info">💧 濕度：<span style="font-family: 'Poppins';">${currentHumidity} %<span/></p>
       </div>
     `;
 }
@@ -155,12 +180,12 @@ function renderWeeklyWeather(weekTemperatures, weekDescriptions) {
   
     const promises = [];
   
-    for (let i = 1; i <= 7; i++) {
+    for (let i = 0; i < 7; i++) {
       const futureDate = new Date(now);
       futureDate.setDate(now.getDate() + i);
       const weekday = weekdayMap[futureDate.getDay()];
-      const temperature = weekTemperatures[i - 1] || "—";
-      const description = weekDescriptions[i - 1] || "—";
+      const temperature = weekTemperatures[i] || "—";
+      const description = weekDescriptions[i] || "—";
       const iconSrc = getWeekWeatherIcon(description);
   
       const promise = fetch(iconSrc)
@@ -184,13 +209,12 @@ function renderWeeklyWeather(weekTemperatures, weekDescriptions) {
       promises.push(promise);
     }
   
-    //照順序插入
     Promise.all(promises).then((results) => {
       results.forEach(({ svgText, weekday, temperature, iconSrc }) => {
         const item = document.createElement("div");
         item.className = "weekly-weather_item";
         item.innerHTML = `
-          <div>${svgText}</div>
+          <div class="weather-svg">${svgText}</div>
           <p class="weekly-text">${weekday}</p>
           <p class="weekly-text">${temperature}°C</p>
         `;
@@ -226,7 +250,6 @@ function renderWeeklyWeather(weekTemperatures, weekDescriptions) {
       });
     });
   }
-  
 
 function getWeekWeatherIcon(description) {
   if (["多雲時晴", "晴時多雲"].includes(description)) {
@@ -251,7 +274,7 @@ function renderMessages(messages) {
   chatSection.innerHTML = "";
   messages.forEach((msg) => {
     const msgDiv = document.createElement("div");
-    msgDiv.innerHTML = `${msg.time}<br><span style="font-weight: 600;">${msg.text}</span>`;
+    msgDiv.innerHTML = `<span style="white-space: nowrap;">${msg.time}</span><span style="font-weight: 600;">${msg.text}</span>`;
     msgDiv.classList.add(getRandomColorClass());
     msgDiv.classList.add("msg");
     chatSection.appendChild(msgDiv);
@@ -278,7 +301,7 @@ function escapeHTML(str) {
 function renderPostMessage(msg) {
   const msgDiv = document.createElement("div");
   const safeText = escapeHTML(msg.text);
-  msgDiv.innerHTML = `${msg.time}<br><span style="font-weight: 600;">${safeText}</span>`;
+  msgDiv.innerHTML = `<span style="white-space: nowrap;">${msg.time}</span><span style="font-weight: 600;">${msg.text}</span>`;
   msgDiv.classList.add(getRandomColorClass());
   msgDiv.classList.add("msg");
   chatSection.appendChild(msgDiv);
@@ -293,10 +316,12 @@ function onClearUI() {
 // 處理送出留言
 button.addEventListener("click", async () => {
   const text = input.value.trim();
-  if (!text || text.length > 100) {
+  if (!text){
+   return
+  } else if(text.length > 100){
     alert("不可超過100字")
     return
-}
+  }
 
   await handleSubmit(text);
   input.value = "";
