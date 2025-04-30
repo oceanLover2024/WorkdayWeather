@@ -11,7 +11,6 @@ export function connect(onNewMessage, onClearMessages, onError) {
   source.onerror = (err) => {
     console.error("SSE錯誤:", err);
     if (onError) onError(err);
-    source.close();
   };
 
   return source;
