@@ -1,5 +1,5 @@
 let url = "https://workdayweather.onrender.com";
-function connect(onNewMessage, onClearMessages, onError) {
+export function connect(onNewMessage, onClearMessages, onError) {
   const source = new EventSource(`${url}/api/stream`);
   source.addEventListener("new_message", (e) => {
     const msg = JSON.parse(e.data);
@@ -17,7 +17,7 @@ function connect(onNewMessage, onClearMessages, onError) {
   return source;
 }
 
-async function postMessage(text) {
+export async function postMessage(text) {
   const res = await fetch(`${url}/api/message`, {
     method: "POST",
     headers: {
@@ -30,13 +30,13 @@ async function postMessage(text) {
   const result = await res.json();
   return result;
 }
-async function getMessage() {
+export async function getMessage() {
   const res = await fetch(`${url}/api/messages`);
   const result = await res.json();
   return result;
 }
 //------------------------------------
-async function startChat(renderMessages, renderPostMessage, onClearUI) {
+export async function startChat(renderMessages, renderPostMessage, onClearUI) {
   // 1. 載入歷史訊息
   const result = await getMessage();
   if (result.status === "success") {
@@ -54,7 +54,7 @@ async function startChat(renderMessages, renderPostMessage, onClearUI) {
 }
 
 // 使用者送出訊息時觸發
-async function handleSubmit(text) {
+export async function handleSubmit(text) {
   const result = await postMessage(text);
   if (result.status !== "success") {
     console.log("留言送出失敗:", result.message);
