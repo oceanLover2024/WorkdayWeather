@@ -40,9 +40,3 @@ export async function getWeekData(cityName) {
   //console.log("一周天氣描述陣列", weekDescriptions);
   return { weekTemperatures, weekDescriptions };
 }
-
-//async function test() {
-// let answer = await getWeekData("臺北市");
-// console.log("answer:", answer);
-//}
-//test();

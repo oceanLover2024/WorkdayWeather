@@ -59,4 +59,5 @@ export async function handleSubmit(text) {
   if (result.status !== "success") {
     console.log("留言送出失敗:", result.message);
   }
+  return result;
 }
