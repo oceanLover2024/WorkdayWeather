@@ -128,7 +128,7 @@ header > h1 a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   position: relative;
 }
 .city-title::before {
@@ -155,7 +155,8 @@ header > h1 a {
   font-size: 60px;
 }
 .city-weather {
-  padding: 30px 40px;
+  padding: 20px 40px;
+  overflow: hidden;
 }
 
 /*---聊天室---*/
