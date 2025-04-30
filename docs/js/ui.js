@@ -118,12 +118,12 @@ function renderWeatherInfo(cityName, weatherData) {
         <p>${currentDatetime}</p>
       </div>
       <div class="city-status">
-        <img src="${iconUrl}" alt="${currentDescription}" style="width: 150px;" >    
+        <img src="${iconUrl}" alt="${currentDescription}" style="width: 130px;" >    
         <p>${currentTemperature} °C</p>  
       </div>
       <div style="display: flex; justify-content: space-around;">
-        <p style="font-size: 20px">🌧️ 降雨率：${currentRain} %</p>
-        <p style="font-size: 20px">💧 濕度：${currentHumidity} %</p>
+        <p style="font-size: 18px">🌧️ 降雨率：${currentRain} %</p>
+        <p style="font-size: 18px">💧 濕度：${currentHumidity} %</p>
       </div>
     `;
 }
@@ -251,7 +251,7 @@ function renderMessages(messages) {
   chatSection.innerHTML = "";
   messages.forEach((msg) => {
     const msgDiv = document.createElement("div");
-    msgDiv.innerHTML = `${msg.time}<br><span style="font-size: 18px; font-weight: 600;">${msg.text}</span>`;
+    msgDiv.innerHTML = `${msg.time}<br><span style="font-weight: 600;">${msg.text}</span>`;
     msgDiv.classList.add(getRandomColorClass());
     msgDiv.classList.add("msg");
     chatSection.appendChild(msgDiv);
@@ -278,7 +278,7 @@ function escapeHTML(str) {
 function renderPostMessage(msg) {
   const msgDiv = document.createElement("div");
   const safeText = escapeHTML(msg.text);
-  msgDiv.innerHTML = `${msg.time}<br><span style="font-size: 18px; font-weight: 600;">${safeText}</span>`;
+  msgDiv.innerHTML = `${msg.time}<br><span style="font-weight: 600;">${safeText}</span>`;
   msgDiv.classList.add(getRandomColorClass());
   msgDiv.classList.add("msg");
   chatSection.appendChild(msgDiv);
