@@ -9,7 +9,7 @@ async function fetchNow() {
 }
 export async function getCurrentData(cityName) {
   const data = await fetchNow();
-  console.log(data);
+
   const cityData = data.find((city) => city.LocationName.includes(cityName));
   if (!cityData) {
     console.log("無此縣市資料");
