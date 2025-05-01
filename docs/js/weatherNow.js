@@ -9,7 +9,7 @@ async function fetchNow() {
 }
 export async function getCurrentData(cityName) {
   const data = await fetchNow();
-
+  console.log(data);
   const cityData = data.find((city) => city.LocationName.includes(cityName));
   if (!cityData) {
     console.log("無此縣市資料");
@@ -77,11 +77,12 @@ export async function getCurrentData(cityName) {
   });
 
   if (!currentRainData) {
-    currentRainData = descriptionArray.find((e) => {
+    currentRainData = RainArray.find((e) => {
       const start = new Date(e.StartTime);
       return start > now;
     });
   }
+
   const currentRain =
     currentRainData.ElementValue[0].ProbabilityOfPrecipitation;
 
