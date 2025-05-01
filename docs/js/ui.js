@@ -11,12 +11,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const weatherData = await getCurrentData(defaultCity);
     renderWeatherInfo(defaultCity, weatherData);
 
-    if (
-        weatherData.currentDescription.includes("雷") &&
-        weatherData.currentDescription.includes("雨")
-    ) {
-        animate();
-    }
   } catch (error) {
     console.error(error);
     weatherInfo.innerHTML = "<p>載入失敗，請稍後再試。</p>";
@@ -87,7 +81,6 @@ function renderRandomJokeNotice() {
 
 // 取得API即時氣象資訊
 const paths = document.querySelectorAll(".map path");
-console.log(paths)
 const weatherInfo = document.getElementById("weather-info");
 
 paths.forEach((path) => {
@@ -128,14 +121,20 @@ function getCurrentFormattedDate() {
 
 // 渲染即時資訊
 function renderWeatherInfo(cityName, weatherData) {
-  const iconUrl = getWeatherIcon(weatherData.weather);
-  const currentDatetime = getCurrentFormattedDate();
   const {
     currentDescription,
     currentTemperature,
     currentRain,
     currentHumidity
   } = weatherData;
+  const iconUrl = getWeatherIcon(currentDescription);
+  const currentDatetime = getCurrentFormattedDate();
+
+  if (currentDescription.includes("雷") || currentDescription.includes("雨")){
+    startRain();
+  }else{
+    stopRain();
+  }
 
   weatherInfo.innerHTML = `
       <div class="city-title">
@@ -155,10 +154,12 @@ function renderWeatherInfo(cityName, weatherData) {
 
 // 即時天氣圖示
 function getWeatherIcon(weatherDescription) {
-  if (typeof weather !== "string") return "./images/sunny.svg";
-
+  if (typeof weatherDescription !== "string") return "./images/sunny.svg";
+  
   if (weatherDescription.includes("雷")) {
     return "./images/thunderstorm.svg";
+  } else if (weatherDescription.includes("雨")) {
+    return "./images/rain.png";
   } else if (weatherDescription.includes("晴")) {
     return "./images/sunny.svg";
   } else if (weatherDescription.includes("雲")) {
@@ -332,7 +333,6 @@ startChat(renderMessages, renderPostMessage, onClearUI);
 // 下雨動畫
 const canvas = document.getElementById("background-canvas");
 const ctx = canvas.getContext("2d");
-
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -341,28 +341,54 @@ window.addEventListener("resize", () => {
   canvas.height = window.innerHeight;
 });
 
-// 雨滴設定
-const raindrops = Array.from({ length: 30 }, () => ({
-  x: Math.random() * canvas.width,
-  y: Math.random() * canvas.height,
-  dy: 2 + Math.random() * 2
-}));
+let raindrops = [];
+let isRaining = false;
+let animationId;
+const MAX_DROPS = 30;
+
+function generateRaindrops(count) {
+  return Array.from({ length: count }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    dy: 2 + Math.random() * 2
+  }));
+}
+
+// 啟動雨滴動畫
+function startRain() {
+  if (isRaining) return;
+  isRaining = true;
+  raindrops = generateRaindrops(MAX_DROPS);
+  animate();
+}
+
+// 停止雨滴動畫
+function stopRain() {
+  isRaining = false;
+}
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.strokeStyle = "rgba(95, 185, 215, 0.5)";
   ctx.lineWidth = 1;
+
   for (const drop of raindrops) {
     ctx.beginPath();
     ctx.moveTo(drop.x, drop.y);
     ctx.lineTo(drop.x, drop.y + 10);
     ctx.stroke();
+
     drop.y += drop.dy;
     if (drop.y > canvas.height) {
       drop.y = -10;
       drop.x = Math.random() * canvas.width;
     }
   }
-  requestAnimationFrame(animate);
+
+  if (!isRaining && raindrops.length > 0) {
+    raindrops.pop();
+  }
+
+  animationId = requestAnimationFrame(animate);
 }
