@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // 每日笑話
 const workdayNotice = document.querySelector(".work-notice_content")
-
 const jokes = [
   {
     emoji: "🤯",
@@ -49,12 +48,12 @@ const jokes = [
   {
     emoji: "😵‍💫",
     question: "Q. MySQL真的是我的嗎？",
-    answer: "A: 不是",
+    answer: "",
   },
   {
     emoji: "🤔",
     question: "Q. 皮卡丘十天不洗澡會有什麼？",
-    answer: "A: 牙縫🦷🦷",
+    answer: "A: Pokemon垢",
   },
   {
     emoji: "📚",
@@ -80,14 +79,15 @@ function renderRandomJokeNotice() {
     <p style="font-size:45px">${joke.emoji}</p>
     <div>
       <p style="font-size: 18px; font-weight:600; margin-bottom: 10px;">${joke.question}</p>
-      <p>${joke.answer}</p>
+      ${joke.answer ? `<p>${joke.answer}</p>` : ""}
     </div>
   `;
 }
 
 
 // 取得API即時氣象資訊
-const paths = document.querySelectorAll("#map a");
+const paths = document.querySelectorAll(".map path");
+console.log(paths)
 const weatherInfo = document.getElementById("weather-info");
 
 paths.forEach((path) => {
@@ -114,14 +114,14 @@ function getCurrentFormattedDate() {
     "Monday",
     "Tuesday",
     "Wednesday",
-    "Thusdday",
+    "Thursdday",
     "Friday",
     "Saturday",
   ];
-  const day = days[now.getDay()]; // 星期幾
+  const day = days[now.getDay()];
 
-  const month = String(now.getMonth() + 1).padStart(2, "0"); // 月份
-  const date = String(now.getDate()).padStart(2, "0"); // 日期
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const date = String(now.getDate()).padStart(2, "0");
 
   return `${day} ｜ ${month}.${date}`;
 }
@@ -134,7 +134,7 @@ function renderWeatherInfo(cityName, weatherData) {
     currentDescription,
     currentTemperature,
     currentRain,
-    currentHumidity,
+    currentHumidity
   } = weatherData;
 
   weatherInfo.innerHTML = `
@@ -208,7 +208,7 @@ function renderWeeklyWeather(weekTemperatures, weekDescriptions) {
   
       promises.push(promise);
     }
-  
+
     Promise.all(promises).then((results) => {
       results.forEach(({ svgText, weekday, temperature, iconSrc }) => {
         const item = document.createElement("div");
@@ -257,8 +257,7 @@ function getWeekWeatherIcon(description) {
   } else if (["陰時多雲短暫陣雨", "多雲短暫陣雨"].includes(description)) {
     return "./images/week-Rain&Sun.svg";
   } else if (
-    ["多雲時陰短暫陣雨或雷雨", "陰短暫陣雨或雷雨"].includes(description)
-  ) {
+    ["多雲時陰短暫陣雨或雷雨", "陰短暫陣雨或雷雨"].includes(description)) {
     return "./images/week-Rain&Thunderstorm.svg";
   } else {
     return "./images/week-Partly-cloudy.svg";
@@ -282,9 +281,9 @@ function renderMessages(messages) {
 }
 // 隨機訊息背景色
 function getRandomColorClass() {
-  const classes = ["bg-red", "bg-green", "bg-blue"];
-  const index = Math.floor(Math.random() * classes.length);
-  return classes[index];
+  const chatColors = ["bg-red", "bg-green", "bg-blue"];
+  const index = Math.floor(Math.random() * chatColors.length);
+  return chatColors[index];
 }
 
 // 仿止xss
@@ -327,17 +326,10 @@ button.addEventListener("click", async () => {
   input.value = "";
 });
 
-// 按 Enter 也可以送出
-input.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    button.click();
-  }
-});
-
 startChat(renderMessages, renderPostMessage, onClearUI);
 
 
-
+// 下雨動畫
 const canvas = document.getElementById("background-canvas");
 const ctx = canvas.getContext("2d");
 
@@ -349,7 +341,7 @@ window.addEventListener("resize", () => {
   canvas.height = window.innerHeight;
 });
 
-//雨滴設定
+// 雨滴設定
 const raindrops = Array.from({ length: 30 }, () => ({
   x: Math.random() * canvas.width,
   y: Math.random() * canvas.height,

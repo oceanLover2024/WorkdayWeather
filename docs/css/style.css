@@ -80,11 +80,11 @@ header > h1 {
 }
 
 .map-block svg {
-  width: 100%;
-  height: 100%;
+  width: 700px;
+  height: 700px;
   object-fit: contain;
   display: block;
-  aspect-ratio: 1 / 1; /* 保持正方比例，如果不設可能會被壓扁 */
+  aspect-ratio: 1 / 1;
 }
 
 .container {
@@ -95,25 +95,18 @@ header > h1 {
   align-items: center;
 }
 
-.map .block {
-  width: 600px;
-  height: 600px;
-}
-
-.map a path {
-  transition: all 0.2s;
-}
-
-.map a:hover path {
-  fill: skyblue;
-}
-
-.map a.active path {
-  fill: cornflowerblue;
-}
-
 .map .st0 {
-  fill: #e6e6e6;
+  fill: #e4f6e3;
+}
+.map path {
+  stroke: #333;
+  fill: transparect;
+  transition: 0.5s;
+}
+.map path:hover {
+  fill: skyblue;
+  cursor: pointer;
+  transform: translate(-10px, -5px);
 }
 
 /*----右半部分----*/
@@ -304,7 +297,7 @@ header > h1 {
 .work-notice {
   position: absolute;
   top: 80px;
-  padding: 25px 20px;
+  padding: 25px 15px;
   background-color: #fff;
   border-radius: 10px;
   width: fit-content;
