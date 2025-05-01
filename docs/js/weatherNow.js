@@ -4,10 +4,12 @@ const nowUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-089?Au
 async function fetchNow() {
   const res = await fetch(nowUrl);
   const data = await res.json();
+
   return data.records.Locations[0].Location;
 }
 export async function getCurrentData(cityName) {
   const data = await fetchNow();
+
   const cityData = data.find((city) => city.LocationName.includes(cityName));
   if (!cityData) {
     console.log("無此縣市資料");
@@ -30,7 +32,8 @@ export async function getCurrentData(cityName) {
   nextHour.setHours(now.getHours() + 1);
   nextHour.setMinutes(0, 0, 0);
   //即時溫度
-  const ifNoTempData = temperatureArray[0];
+  const ifNoTempData = temperatureArray[0].ElementValue[0].Temperature;
+
   const currentTemperatureData =
     temperatureArray.find((e) => {
       const dataTime = new Date(e.DataTime);
@@ -39,7 +42,8 @@ export async function getCurrentData(cityName) {
   const currentTemperature = currentTemperatureData.ElementValue[0].Temperature;
 
   //即時濕度
-  const ifNoHumidityData = humidityArray[0];
+  const ifNoHumidityData = humidityArray[0].ElementValue[0].RelativeHumidity;
+
   const currenthumidityData =
     humidityArray.find((e) => {
       const dataTime = new Date(e.DataTime);
@@ -51,13 +55,14 @@ export async function getCurrentData(cityName) {
 
   //即時天氣狀況
 
-  const currentDescriptionData = descriptionArray.find((e) => {
+  let currentDescriptionData = descriptionArray.find((e) => {
     const start = new Date(e.StartTime);
     const end = new Date(e.EndTime);
     return start <= now && now < end;
   });
+
   if (!currentDescriptionData) {
-    currentDescriptionData = descriptionArray.find(() => {
+    currentDescriptionData = descriptionArray.find((e) => {
       const start = new Date(e.StartTime);
       return start > now;
     });
@@ -65,13 +70,14 @@ export async function getCurrentData(cityName) {
   const currentDescription = currentDescriptionData.ElementValue[0].Weather;
 
   //即時降雨率
-  const currentRainData = RainArray.find((e) => {
+  let currentRainData = RainArray.find((e) => {
     const start = new Date(e.StartTime);
     const end = new Date(e.EndTime);
     return start <= now && now < end;
   });
+
   if (!currentRainData) {
-    currentRainData = descriptionArray.find(() => {
+    currentRainData = descriptionArray.find((e) => {
       const start = new Date(e.StartTime);
       return start > now;
     });
