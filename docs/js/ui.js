@@ -107,7 +107,7 @@ function getCurrentFormattedDate() {
     "Monday",
     "Tuesday",
     "Wednesday",
-    "Thursdday",
+    "Thursday",
     "Friday",
     "Saturday",
   ];
@@ -127,6 +127,7 @@ function renderWeatherInfo(cityName, weatherData) {
     currentRain,
     currentHumidity
   } = weatherData;
+  console.log(currentDescription)
   const iconUrl = getWeatherIcon(currentDescription);
   const currentDatetime = getCurrentFormattedDate();
 
