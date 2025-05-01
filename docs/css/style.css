@@ -28,6 +28,7 @@ body {
   margin: 0;
   padding: 0;
   position: relative;
+  overflow-x: hidden;
 }
 
 .content,
@@ -99,14 +100,13 @@ header > h1 {
   fill: #e4f6e3;
 }
 .map path {
-  stroke: #333;
+  stroke: #1f5124;
   fill: transparect;
   transition: 0.5s;
 }
 .map path:hover {
   fill: skyblue;
   cursor: pointer;
-  transform: translate(-10px, -5px);
 }
 
 /*----右半部分----*/
@@ -407,7 +407,7 @@ canvas#background-canvas {
     height: unset;
   }
   .main-left {
-    gap: 30px;
+    gap: 20px;
   }
   .main-right {
     flex-direction: column;
@@ -452,5 +452,9 @@ canvas#background-canvas {
     width: 100%;
     display: flex;
     flex-direction: column;
+  }
+  .map-block svg {
+    width: 100%;
+    height: 100%;
   }
 }
