@@ -99,14 +99,13 @@ header > h1 {
   fill: #e4f6e3;
 }
 .map path {
-  stroke: #333;
+  stroke: #1f5124;
   fill: transparect;
   transition: 0.5s;
 }
 .map path:hover {
   fill: skyblue;
   cursor: pointer;
-  transform: translate(-10px, -5px);
 }
 
 /*----右半部分----*/
