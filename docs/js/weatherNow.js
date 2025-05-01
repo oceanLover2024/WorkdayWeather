@@ -1,4 +1,4 @@
-const apiKey = "CWA-1F09ABED-82CA-4ECA-B66A-66942DA974AB";
+const apiKey = "CWA-3B96A556-9E4C-4F8D-87D7-6E09A56DCFC5";
 const nowUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-089?Authorization=${apiKey}`;
 
 async function fetchNow() {
@@ -8,7 +8,6 @@ async function fetchNow() {
 }
 export async function getCurrentData(cityName) {
   const data = await fetchNow();
-  //console.log("完整陣列", data);
   const cityData = data.find((city) => city.LocationName.includes(cityName));
   if (!cityData) {
     console.log("無此縣市資料");
@@ -27,21 +26,29 @@ export async function getCurrentData(cityName) {
     (e) => e.ElementName === "3小時降雨機率"
   ).Time;
   const now = new Date();
-  const nowHour = new Date().getHours();
+  const nextHour = new Date();
+  nextHour.setHours(now.getHours() + 1);
+  nextHour.setMinutes(0, 0, 0);
   //即時溫度
-  const currentTemperatureData = temperatureArray.find((e) => {
-    const dataHour = new Date(e.DataTime).getHours();
-    return dataHour === nowHour;
-  });
+  const ifNoTempData = temperatureArray[0];
+  const currentTemperatureData =
+    temperatureArray.find((e) => {
+      const dataTime = new Date(e.DataTime);
+      return dataTime > now && dataTime <= nextHour;
+    }) || ifNoTempData;
   const currentTemperature = currentTemperatureData.ElementValue[0].Temperature;
-  //console.log("即時溫度", currentTemperature);
+
   //即時濕度
-  const currenthumidityData = humidityArray.find((e) => {
-    const dataHour = new Date(e.DataTime).getHours();
-    return dataHour === nowHour;
-  });
+  const ifNoHumidityData = humidityArray[0];
+  const currenthumidityData =
+    humidityArray.find((e) => {
+      const dataTime = new Date(e.DataTime);
+
+      return dataTime > now && dataTime <= nextHour;
+    }) || ifNoHumidityData;
+
   const currentHumidity = currenthumidityData.ElementValue[0].RelativeHumidity;
-  //console.log("即時濕度", currentHumidity);
+
   //即時天氣狀況
 
   const currentDescriptionData = descriptionArray.find((e) => {
@@ -49,17 +56,29 @@ export async function getCurrentData(cityName) {
     const end = new Date(e.EndTime);
     return start <= now && now < end;
   });
+  if (!currentDescriptionData) {
+    currentDescriptionData = descriptionArray.find(() => {
+      const start = new Date(e.StartTime);
+      return start > now;
+    });
+  }
   const currentDescription = currentDescriptionData.ElementValue[0].Weather;
-  // console.log("即時天氣狀況", currentDescription);
+
   //即時降雨率
   const currentRainData = RainArray.find((e) => {
     const start = new Date(e.StartTime);
     const end = new Date(e.EndTime);
     return start <= now && now < end;
   });
+  if (!currentRainData) {
+    currentRainData = descriptionArray.find(() => {
+      const start = new Date(e.StartTime);
+      return start > now;
+    });
+  }
   const currentRain =
     currentRainData.ElementValue[0].ProbabilityOfPrecipitation;
-  // console.log("即時降雨率", currentRain);
+
   return {
     currentTemperature,
     currentHumidity,
