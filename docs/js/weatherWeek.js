@@ -1,6 +1,6 @@
 import { getCurrentData } from "./weatherNow.js";
 
-const apiKey = "CWA-1F09ABED-82CA-4ECA-B66A-66942DA974AB";
+const apiKey = "CWA-3B96A556-9E4C-4F8D-87D7-6E09A56DCFC5";
 const weekUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=${apiKey}`;
 function formatDate(date) {
   const y = date.getFullYear();
@@ -20,7 +20,7 @@ async function fetchWeek() {
 }
 export async function getWeekData(cityName) {
   const data = await fetchWeek();
-  // console.log("完整資料:", data);
+
   const cityData = data.find((city) => city.LocationName.includes(cityName));
   if (!cityData) {
     console.log("無此縣市資料");
@@ -32,7 +32,7 @@ export async function getWeekData(cityName) {
   const descriptionArray = cityData.WeatherElement.find(
     (e) => e.ElementName === "天氣預報綜合描述"
   ).Time;
-  // console.log("天氣陣列", temperatureArray);
+
   const weekTemperatures = [];
   const weekDescriptions = [];
   const now = new Date();
@@ -52,7 +52,7 @@ export async function getWeekData(cityName) {
   }
   const todayTemperature = await getToday(cityName, "currentTemperature");
   weekTemperatures.unshift(todayTemperature);
-  console.log("一週天氣陣列:", weekTemperatures);
+
   for (const item of descriptionArray) {
     const itemTime = new Date(item.StartTime);
     if (
@@ -68,6 +68,6 @@ export async function getWeekData(cityName) {
   }
   const todayDescription = await getToday(cityName, "currentDescription");
   weekDescriptions.unshift(todayDescription);
-  console.log("一周天氣描述陣列", weekDescriptions);
+
   return { weekTemperatures, weekDescriptions };
 }
