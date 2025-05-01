@@ -28,6 +28,7 @@ body {
   margin: 0;
   padding: 0;
   position: relative;
+  overflow-x: hidden;
 }
 
 .content,
@@ -406,7 +407,7 @@ canvas#background-canvas {
     height: unset;
   }
   .main-left {
-    gap: 30px;
+    gap: 20px;
   }
   .main-right {
     flex-direction: column;
@@ -451,5 +452,9 @@ canvas#background-canvas {
     width: 100%;
     display: flex;
     flex-direction: column;
+  }
+  .map-block svg {
+    width: 100%;
+    height: 100%;
   }
 }
