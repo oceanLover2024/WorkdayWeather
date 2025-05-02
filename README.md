@@ -77,7 +77,8 @@ Workday Weather，設計靈感來自每天上班前查看天氣的習慣。
  提供 API 供前端一次性獲取當前所有暫存訊息。
 
 <h4>即時廣播 (SSE - GET /api/stream) </h4>
-利用 SSE（Server-Sent Events），當有新訊息儲存後，主動將訊息推送給所有透過 /api/stream 連線的客戶端。FastAPI 的異步特性在此發揮良好作用。
+利用 SSE（Server-Sent Events），當有新訊息儲存後，主動將訊息推送給所有透過 /api/stream 連線的客戶端。
+
 <h4>跨日清理</h4> 內建基於台北時區的背景排程任務，每日跨日時自動清空 deque 中的訊息，並透過 SSE 發送清除指令。
 
 ### 聊天室 API 端點
