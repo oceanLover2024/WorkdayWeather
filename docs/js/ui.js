@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (error) {
     console.error(error);
     weatherInfo.innerHTML = "<p>載入失敗，請稍後再試。</p>";
-    workdayNotice.innerHTML = "<p>載入失敗，請稍後再試。</p>";
   }
 
   try {
@@ -112,7 +111,6 @@ function getCurrentFormattedDate() {
     "Saturday",
   ];
   const day = days[now.getDay()];
-
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const date = String(now.getDate()).padStart(2, "0");
 
@@ -127,7 +125,6 @@ function renderWeatherInfo(cityName, weatherData) {
     currentRain,
     currentHumidity
   } = weatherData;
-  console.log(currentDescription)
   const iconUrl = getWeatherIcon(currentDescription);
   const currentDatetime = getCurrentFormattedDate();
 
@@ -138,6 +135,7 @@ function renderWeatherInfo(cityName, weatherData) {
   }
 
   weatherInfo.innerHTML = `
+    <div class="fade-in">
       <div class="city-title">
         <h2>${cityName}</h2>
         <p>${currentDatetime}</p>
@@ -150,6 +148,7 @@ function renderWeatherInfo(cityName, weatherData) {
         <p class="city-info">🌧️ 降雨率： <span style="font-family: 'Poppins';">${currentRain} %<span/></p>
         <p class="city-info">💧 濕度：<span style="font-family: 'Poppins';">${currentHumidity} %<span/></p>
       </div>
+    </div>
     `;
 }
 
@@ -175,7 +174,7 @@ function getWeatherIcon(weatherDescription) {
 // 一週氣象
 function renderWeeklyWeather(weekTemperatures, weekDescriptions) {
     const container = document.querySelector(".weekly-weather_container");
-    container.innerHTML = "";
+    container.innerHTML = ""
   
     const now = new Date();
     const weekdayMap = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -302,7 +301,7 @@ function escapeHTML(str) {
 function renderPostMessage(msg) {
   const msgDiv = document.createElement("div");
   const safeText = escapeHTML(msg.text);
-  msgDiv.innerHTML = `<span style="white-space: nowrap;">${msg.time}</span><span style="font-weight: 600;">${msg.text}</span>`;
+  msgDiv.innerHTML = `<span style="white-space: nowrap;">${msg.time}</span><span style="font-weight: 600;">${safeText}</span>`;
   msgDiv.classList.add(getRandomColorClass());
   msgDiv.classList.add("msg");
   chatSection.appendChild(msgDiv);
