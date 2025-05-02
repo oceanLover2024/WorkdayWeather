@@ -77,11 +77,12 @@ export async function getCurrentData(cityName) {
   });
 
   if (!currentRainData) {
-    currentRainData = descriptionArray.find((e) => {
+    currentRainData = RainArray.find((e) => {
       const start = new Date(e.StartTime);
       return start > now;
     });
   }
+
   const currentRain =
     currentRainData.ElementValue[0].ProbabilityOfPrecipitation;
 
