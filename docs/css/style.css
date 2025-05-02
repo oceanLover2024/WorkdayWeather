@@ -253,9 +253,11 @@ header > h1 {
 }
 .weekly-weather_container {
   display: flex;
+  align-items: center;
   gap: 10px;
   background: #e4eaf8;
   padding: 12px;
+  height: 100%;
   border-radius: 10px;
 }
 .weekly-weather_item {
