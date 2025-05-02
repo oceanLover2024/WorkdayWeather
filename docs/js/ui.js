@@ -214,6 +214,7 @@ function renderWeeklyWeather(weekTemperatures, weekDescriptions) {
       results.forEach(({ svgText, weekday, temperature, iconSrc }) => {
         const item = document.createElement("div");
         item.className = "weekly-weather_item";
+        item.classList.add("fade-in");
         item.innerHTML = `
           <div class="weather-svg">${svgText}</div>
           <p class="weekly-text">${weekday}</p>
@@ -344,13 +345,12 @@ window.addEventListener("resize", () => {
 let raindrops = [];
 let isRaining = false;
 let animationId;
-const MAX_DROPS = 30;
 
 function generateRaindrops(count) {
   return Array.from({ length: count }, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    dy: 2 + Math.random() * 2
+    dy: 5
   }));
 }
 
@@ -358,7 +358,7 @@ function generateRaindrops(count) {
 function startRain() {
   if (isRaining) return;
   isRaining = true;
-  raindrops = generateRaindrops(MAX_DROPS);
+  raindrops = generateRaindrops(40);
   animate();
 }
 
@@ -370,7 +370,7 @@ function stopRain() {
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.strokeStyle = "rgba(95, 185, 215, 0.5)";
+  ctx.strokeStyle = "rgba(32, 152, 192, 0.5)";
   ctx.lineWidth = 1;
 
   for (const drop of raindrops) {
@@ -392,3 +392,4 @@ function animate() {
 
   animationId = requestAnimationFrame(animate);
 }
+// startRain()
