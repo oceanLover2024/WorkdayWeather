@@ -34,25 +34,22 @@ export async function getMessage() {
   const result = await res.json();
   return result;
 }
-//------------------------------------
+
 export async function startChat(renderMessages, renderPostMessage, onClearUI) {
-  // 1. 載入歷史訊息
   const result = await getMessage();
   if (result.status === "success") {
-    renderMessages(result.data); // 假設渲染的函數是renderMessages
+    renderMessages(result.data);
   } else {
     console.log("歷史留言載入失敗:", result.message);
   }
 
-  // 2. 開啟 SSE 監聽
   connect(
-    (msg) => renderPostMessage(msg), //假設渲染的函數是renderPostMessage
-    () => onClearUI(), //假設渲染的函數是onClearUI
+    (msg) => renderPostMessage(msg),
+    () => onClearUI(),
     (err) => console.log("SSE 斷線錯誤:", err)
   );
 }
 
-// 使用者送出訊息時觸發
 export async function handleSubmit(text) {
   const result = await postMessage(text);
   if (result.status !== "success") {

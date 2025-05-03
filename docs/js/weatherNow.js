@@ -31,7 +31,7 @@ export async function getCurrentData(cityName) {
   const nextHour = new Date();
   nextHour.setHours(now.getHours() + 1);
   nextHour.setMinutes(0, 0, 0);
-  //即時溫度
+
   const ifNoTempData = temperatureArray[0].ElementValue[0].Temperature;
 
   const currentTemperatureData =
@@ -41,7 +41,6 @@ export async function getCurrentData(cityName) {
     }) || ifNoTempData;
   const currentTemperature = currentTemperatureData.ElementValue[0].Temperature;
 
-  //即時濕度
   const ifNoHumidityData = humidityArray[0].ElementValue[0].RelativeHumidity;
 
   const currenthumidityData =
@@ -52,8 +51,6 @@ export async function getCurrentData(cityName) {
     }) || ifNoHumidityData;
 
   const currentHumidity = currenthumidityData.ElementValue[0].RelativeHumidity;
-
-  //即時天氣狀況
 
   let currentDescriptionData = descriptionArray.find((e) => {
     const start = new Date(e.StartTime);
@@ -69,7 +66,6 @@ export async function getCurrentData(cityName) {
   }
   const currentDescription = currentDescriptionData.ElementValue[0].Weather;
 
-  //即時降雨率
   let currentRainData = RainArray.find((e) => {
     const start = new Date(e.StartTime);
     const end = new Date(e.EndTime);
