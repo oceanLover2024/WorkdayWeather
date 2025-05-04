@@ -1,8 +1,8 @@
 # Workday Weather - 即時天氣與聊天室互動平台
 
-[![GitHub Pages Deploy](https://img.shields.io/badge/Demo-Live-brightgreen?style=flat-square)](https://ayating.github.io/WorkdayWeather/)
+[![GitHub Pages Deploy](https://img.shields.io/badge/Demo-Live-brightgreen?style=flat-square)](https://oceanlover2024.github.io/WorkdayWeather/)
 
-**線上體驗 Demo:** [https://ayating.github.io/WorkdayWeather/](https://ayating.github.io/WorkdayWeather/)
+**線上體驗 Demo:** [https://ayating.github.io/WorkdayWeather/](https://oceanlover2024.github.io/WorkdayWeather/)
 
 _（後端部署於 Render 免費方案，若初次載入或聊天室回應較慢，請稍候幾秒鐘讓服務喚醒）_
 
