@@ -17,7 +17,7 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(message.router)
 app.include_router(stream.router)
 
-origins=["*"]
+origins=["https://addfish904.github.io","https://ayating.github.io","https://oceanLover2024.github.io"]
 
 app.add_middleware(
     CORSMiddleware,
