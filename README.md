@@ -56,7 +56,7 @@ _（後端部署於 Render 免費方案，若初次載入或聊天室回應較�
   - 每日自動清空聊天記錄，呼應氣象資訊的時效性特點，同時確保系統資源最佳化。
   - 基本 XSS 防護：對使用者輸入進行 HTML 實體逸脫處理。
   - 訊息時間戳：自動附加訊息發送時的伺服器時間 (台北時區)。
-- **😂 上班族小確幸：** 頁面包含隨機顯示的冷笑話，增添趣味。
+- **😂 上班族小確幸：** 頁面包含隨機顯示的冷笑話，與台灣早餐店飲料封膜笑話的文化連結，增添趣味。
 - **📱 響應式網頁設計 (RWD)：** 確保在不同尺寸的裝置上皆有良好的瀏覽體驗。
 
 ## 技術棧
@@ -84,15 +84,15 @@ _（後端部署於 Render 免費方案，若初次載入或聊天室回應較�
 
 ## 架構概觀
 
-1.  **使用者介面 (Frontend):** 使用者透過部署在 GitHub Pages 上的靜態網頁 (HTML/CSS/JS) 與應用互動。
-2.  **天氣資料獲取:** 前端 JavaScript (`weatherNow.js`, `weatherWeek.js`) 直接呼叫中央氣象署的 Open API，獲取並處理即時與一週天氣資料，由 `ui.js` 渲染到畫面上。
-3.  **聊天室互動 (Backend):**
-    - 前端 (`chat.js`) 透過 `fetch` 向部署在 Render 上的 FastAPI 後端發送 `POST /api/message` 請求來提交新訊息。
-    - 後端 (`routers/message.py`, `services/message_service.py`) 驗證訊息，添加時間戳，存入記憶體中的 `deque`。
-    - 新訊息儲存後，後端 (`services/message_service.py`) 透過 SSE 連線 (`GET /api/stream` 由 `routers/stream.py` 處理) 將新訊息 (`new_message` 事件) 推送給所有已連接的前端客戶端。
-    - 前端 (`chat.js`) 初次載入時，透過 `fetch` 發送 `GET /api/messages` 請求獲取當前所有歷史訊息。
-    - 前端 (`chat.js`) 透過 `EventSource` 監聽來自 `GET /api/stream` 的 SSE 事件 (`new_message`, `clear_message`)，並呼叫 `ui.js` 中的函數即時更新聊天室畫面。
-4.  **背景任務 (Backend):** FastAPI 後端 (`main.py`, `services/message_service.py`) 運行一個 `asyncio` 背景任務，定時檢查是否跨日 (台北時區)。若跨日，則清空 `deque` 中的訊息，並透過 SSE 推送 `clear_message` 事件。
+- **使用者介面 (Frontend):** 使用者透過部署在 GitHub Pages 上的靜態網頁 (HTML/CSS/JS) 與應用互動。
+- **天氣資料獲取:** 前端 JavaScript (`weatherNow.js`, `weatherWeek.js`) 直接呼叫中央氣象署的 Open API，獲取並處理即時與一週天氣資料，由 `ui.js` 渲染到畫面上。
+- **聊天室互動 (Backend):**
+  - 前端 (`chat.js`) 透過 `fetch` 向部署在 Render 上的 FastAPI 後端發送 `POST /api/message` 請求來提交新訊息。
+  - 後端 (`routers/message.py`, `services/message_service.py`) 驗證訊息，添加時間戳，存入記憶體中的 `deque`。
+  - 新訊息儲存後，後端 (`services/message_service.py`) 透過 SSE 連線 (`GET /api/stream` 由 `routers/stream.py` 處理) 將新訊息 (`new_message` 事件) 推送給所有已連接的前端客戶端。
+  - 前端 (`chat.js`) 初次載入時，透過 `fetch` 發送 `GET /api/messages` 請求獲取當前所有歷史訊息。
+  - 前端 (`chat.js`) 透過 `EventSource` 監聽來自 `GET /api/stream` 的 SSE 事件 (`new_message`, `clear_message`)，並呼叫 `ui.js` 中的函數即時更新聊天室畫面。
+- **背景任務 (Backend):** FastAPI 後端 (`main.py`, `services/message_service.py`) 運行一個 `asyncio` 背景任務，定時檢查是否跨日 (台北時區)。若跨日，則清空 `deque` 中的訊息，並透過 SSE 推送 `clear_message` 事件。
 
 ## API 端點 (聊天室)
 
