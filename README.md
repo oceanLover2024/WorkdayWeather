@@ -14,7 +14,9 @@ _（後端部署於 Render 免費方案，若初次載入或聊天室回應較�
 
 我們期望「Workday Weather」能成為上班族每日早晨的一個小小慰藉，在關心天氣的同時，也能感受到人與人之間短暫而溫暖的連結。
 
-<!-- ![Workday Weather 截圖](path/to/screenshot.png) -->
+<img src="./src/demo-ezgif.com-video-to-gif-converter.gif">
+
+<img src="./src/rwd-ezgif.com-video-to-gif-converter.gif">
 
 ## 團隊貢獻
 
