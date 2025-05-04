@@ -1,101 +1,174 @@
-# Workday Weather
+# Workday Weather - 即時天氣與聊天室互動平台
 
-[Workday Weather](https://ayating.github.io/WorkdayWeather/)
+[![GitHub Pages Deploy](https://img.shields.io/badge/Demo-Live-brightgreen?style=flat-square)](https://ayating.github.io/WorkdayWeather/)
 
-Workday Weather，設計靈感來自每天上班前查看天氣的習慣。
+**線上體驗 Demo:** [https://ayating.github.io/WorkdayWeather/](https://ayating.github.io/WorkdayWeather/)
 
-本專案旨在打造一個專為上班族設計的小型即時互動平台，不僅提供天氣查詢功能，更融入心情抒發與社群互動元素。我們希望讓上班族在確認天氣的同時，也能透過聊天室建立人與人之間的支持網絡。如此一來，氣象資訊不再只是冰冷的數據，而是開啟對話、分享感受的起點，形成一種帶有社群溫度的氣象日常入口。
+_（後端部署於 Render 免費方案，若初次載入或聊天室回應較慢，請稍候幾秒鐘讓服務喚醒）_
 
-## 功能說明
+## 專案簡介
 
-<h4>互動式地圖點擊效果</h4>
-  使用者可點擊台灣地圖上的任一縣市，立即取得該地區的天氣資訊。
-<h4>即時天氣資訊顯示</h4>
-  提供所選縣市的即時天氣狀況，資訊包含天氣概況（晴、陰、多雲、降雨）、降雨機率及相對濕度。
-<h4>一週天氣預測切換</h4>
-  呈現從今日起的一週天氣預報，並依據使用者點選的縣市，自動切換顯示當地的七日天氣趨勢。
-<h4>下雨動畫特效</h4>
-  當偵測到當地天氣為降雨時，背景自動觸發細雨動畫，營造符合當下氣候的沉浸式視覺體驗。
-<h4>即時互動聊天室</h4>
-  提供一個基於 SSE（Server-Sent Events） 技術的聊天室，讓使用者可以即時發送與接收訊息，分享天氣心情或相關提醒，建立社群連結。
+「Workday Weather」是一個結合**即時天氣查詢**與**匿名聊天室**的網頁應用程式。設計初衷源於許多上班族每日出門前查看天氣的習慣，我們希望將單純的天氣資訊查詢，轉化為一個更具互動性與人情味的平台。
 
-## 技術架構與資料串接
+使用者不僅可以透過點擊互動式地圖快速獲取台灣各縣市的即時天氣與未來一週預報（資料來源：中央氣象署開放資料平台），還能進入一個基於 **Server-Sent Events (SSE)** 技術的即時聊天室。在這裡，使用者可以匿名分享當下的天氣心情、生活趣事或任何想說的話，營造出輕鬆自在的線上交流空間。
 
-### 前端核心技術
+我們期望「Workday Weather」能成為上班族每日早晨的一個小小慰藉，在關心天氣的同時，也能感受到人與人之間短暫而溫暖的連結。
 
-主要使用 HTML、 CSS、 和 Javascript 進行開發。
+<img src="./src/demo-ezgif.com-video-to-gif-converter.gif">
 
-### 響應式網頁設計
+<img src="./src/rwd-ezgif.com-video-to-gif-converter.gif">
 
-本專案採用 RWD (響應式網頁設計) 確保在各種螢幕尺寸上皆有良好瀏覽體驗，前端主要使用 Javascript 進行開發。
+## 團隊貢獻
 
-### 資料串接
+本專案由三人協作完成，旨在模擬真實開發情境，展現團隊合作與技術整合能力。**專案進度與方向主要透過團隊定期會議共同討論決定。** 各成員主要貢獻如下：
 
-<h4>當日天氣資訊</h4>
+- **丁綾葳 - 專案組長 / 後端開發 (Project Lead / Backend Developer):**
+  - 主導後端架構設計，並負責所有 Python 程式碼實作 (FastAPI 路由、服務邏輯、資料模型)。
+  - 實現 Server-Sent Events (SSE) 伺服器端機制，確保訊息即時、單向推送至客戶端 (`services/message_service.py`, `routers/stream.py`)。
+  - 利用 `asyncio` 開發跨日訊息自動清理的背景任務 (`services/message_service.py`)。
+  - 負責前後端應用程式的部署策略與執行 (Render / GitHub Pages)。
+  - 配置 CORS 策略，解決跨域資源共享問題 (`main.py`)。
+  - 參與團隊會議，協調技術實現與專案方向。
+- **邵佳渝 - 前端開發 (介面設計與實作) (Frontend Developer - UI Design & Implementation):**
+  - 負責前端使用者介面的**規劃、設計**與實作，包含 HTML 結構、CSS 樣式及整體視覺風格。
+  - 實現 SVG 互動地圖的渲染與點擊交互邏輯，觸發天氣資訊更新。
+  - 實現前端使用者介面相關的 JavaScript 邏輯，如隨機笑話、天氣圖示切換、Canvas 下雨動畫效果 (`ui.js`)。
+  - 確保響應式網頁設計 (RWD) 在不同裝置上的視覺一致性與可用性。
+  - 參與團隊會議，貢獻介面設計方案與使用者體驗建議。
+- **蕭郁蓁 - 前端開發 (邏輯與整合) (Frontend Developer - Logic & Integration):**
+  - 負責串接中央氣象署 Open API，包含資料請求、解析與前端狀態管理 (`weatherNow.js`, `weatherWeek.js`)。
+  - 整合前端與後端聊天室 API，實現訊息的發送 (`POST /api/message`)、歷史訊息載入 (`GET /api/messages`)。
+  - 實現 SSE 客戶端邏輯 (`EventSource`)，監聽並處理後端推送事件 (`GET /api/stream`)，確保聊天室即時更新 (`chat.js`)。
+  - 撰寫並維護專案說明文件 (README)。
+  - 參與團隊會議，確保前後端邏輯順暢整合。
 
-- API：
-  台灣未來三天天氣預報 (API: F-D0047-089)。
+## 功能特色
 
-- 使用 Javascript fetch()方法，進行 GET 請求，取得資料。
+- **🗺️ 互動式地圖查詢：** 點擊 SVG 台灣地圖上的縣市，立即顯示該地區天氣資訊。
+- **☀️ 即時天氣資訊：** 顯示選定縣市的當前天氣狀況（溫度、濕度、天氣描述、降雨機率）。
+- **📅 一週天氣預報：** 提供未來七天的天氣預報概覽（白天為主），並根據所選縣市動態更新。
+- **💧 動態天氣視覺：**
+  - 根據天氣狀況顯示對應的圖示。
+  - 遇到降雨天氣時，背景會自動播放 Canvas 製作的下雨動畫效果。
+- **💬 即時聊天室：**
+  - 透過 SSE 技術實現低延遲的即時訊息推送，提升用戶互動體驗。
+  - 訊息暫存於後端記憶體 (`collections.deque`, 最多 50 則)。
+  - 每日自動清空聊天記錄，呼應氣象資訊的時效性特點，同時確保系統資源最佳化。
+  - 基本 XSS 防護：對使用者輸入進行 HTML 實體逸脫處理。
+  - 訊息時間戳：自動附加訊息發送時的伺服器時間 (台北時區)。
+- **😂 上班族小確幸：** 頁面包含隨機顯示的冷笑話，增添趣味。
+- **📱 響應式網頁設計 (RWD)：** 確保在不同尺寸的裝置上皆有良好的瀏覽體驗。
 
-- 即時溫度、即時濕度：
+## 技術棧
 
-  利用條件判斷查找下一小時的資料，並用 find()方法返回。
+- **前端 (Frontend):**
+  - HTML5, CSS3, JavaScript (ES6+)
+  - Fetch API (用於與後端及氣象 API 通訊)
+  - EventSource API (用於 SSE 客戶端)
+  - Canvas API (用於下雨動畫)
+  - SVG (用於互動式地圖)
+- **後端 (Backend):**
+  - Python 3
+  - FastAPI (高效能 Web 框架)
+  - Uvicorn (ASGI 伺服器)
+  - Pydantic (資料驗證與模型定義)
+  - `asyncio` (處理非同步操作與背景任務)
+  - `collections.deque` (用於聊天訊息的記憶體內儲存)
+- **資料來源 (Data Source):**
+  - 中央氣象署開放資料平台 API
+    - `F-D0047-089`: 鄉鎮天氣預報-未來 3 天
+    - `F-D0047-091`: 鄉鎮天氣預報-未來 1 週
+- **部署 (Deployment):**
+  - 前端：GitHub Pages
+  - 後端：Render
 
-- 即時天氣描述、即時降雨率：
+## 架構概觀
 
-  利用條件判斷，查找包含當前時間的區間資料，並用 find()方法返回。
+1.  **使用者介面 (Frontend):** 使用者透過部署在 GitHub Pages 上的靜態網頁 (HTML/CSS/JS) 與應用互動。
+2.  **天氣資料獲取:** 前端 JavaScript (`weatherNow.js`, `weatherWeek.js`) 直接呼叫中央氣象署的 Open API，獲取並處理即時與一週天氣資料，由 `ui.js` 渲染到畫面上。
+3.  **聊天室互動 (Backend):**
+    - 前端 (`chat.js`) 透過 `fetch` 向部署在 Render 上的 FastAPI 後端發送 `POST /api/message` 請求來提交新訊息。
+    - 後端 (`routers/message.py`, `services/message_service.py`) 驗證訊息，添加時間戳，存入記憶體中的 `deque`。
+    - 新訊息儲存後，後端 (`services/message_service.py`) 透過 SSE 連線 (`GET /api/stream` 由 `routers/stream.py` 處理) 將新訊息 (`new_message` 事件) 推送給所有已連接的前端客戶端。
+    - 前端 (`chat.js`) 初次載入時，透過 `fetch` 發送 `GET /api/messages` 請求獲取當前所有歷史訊息。
+    - 前端 (`chat.js`) 透過 `EventSource` 監聽來自 `GET /api/stream` 的 SSE 事件 (`new_message`, `clear_message`)，並呼叫 `ui.js` 中的函數即時更新聊天室畫面。
+4.  **背景任務 (Backend):** FastAPI 後端 (`main.py`, `services/message_service.py`) 運行一個 `asyncio` 背景任務，定時檢查是否跨日 (台北時區)。若跨日，則清空 `deque` 中的訊息，並透過 SSE 推送 `clear_message` 事件。
 
-<h4>一週天氣資訊</h4>
+## API 端點 (聊天室)
 
-- API：台灣未來一週天氣預報(API: F-D0047-091)。
+以下為後端 FastAPI 提供的聊天室相關 API 端點：
 
-- 一週溫度、一週天氣描述：
-  　由於目標使用者對象為上班族，我們所呈現的一週天氣資訊，選用早上六點至晚上六點區間之資料，一週天氣資訊欄位中的第一天，同步即時氣象資訊，第二天開始的欄位，使用 Javascript fetch()方法串接一週天氣 API 。
+- **`POST /api/message`**
 
-- 由於氣象局資料會根據時間做動態更新，我們使用條件判斷，固定蒐集第二天至第七天的資料，排除前後的不穩定性，並蒐集初始時間為早上六點的資料，排除夜間與凌晨的資料，作為一週天氣資料，再使用 unshift()方法插入上一支 API 的即時資料，作為第一天之資料。
+  - **說明:** 發布一則新訊息。
+  - **請求 Body (JSON):**
+    ```json
+    {
+      "text": "想說的話..."
+    }
+    ```
+  - **驗證:** `text` 不可為空或僅含空白，長度不可超過 100 字。
+  - **成功回應 (200 OK):**
+    ```json
+    {
+      "status": "success",
+      "data": {
+        "text": "想說的話...",
+        "time": "YYYY/MM/DD HH:MM:SS"
+      }
+    }
+    ```
+  - **失敗回應 (400 Bad Request / 500 Internal Server Error):**
+    ```json
+    {
+      "status": "error",
+      "data": null,
+      "message": "錯誤訊息說明"
+    }
+    ```
 
-<h4>聊天室資訊</h4>
+- **`GET /api/messages`**
 
-- 透過 SSE（Server-Sent Events）機制與 EventSource 物件，建立與伺服器的即時通訊連線，使前端能自動接收新訊息，即時更新畫面。
+  - **說明:** 獲取當前儲存的所有聊天訊息列表 (最多 50 則，按時間排序)。
+  - **成功回應 (200 OK):**
+    ```json
+    {
+      "status": "success",
+      "data": [
+        { "text": "訊息一", "time": "時間一" },
+        { "text": "訊息二", "time": "時間二" },
+        ...
+      ]
+    }
+    ```
+  - **失敗回應 (500 Internal Server Error):**
+    ```json
+    {
+      "status": "error",
+      "data": null,
+      "message": "伺服器錯誤訊息"
+    }
+    ```
 
-### 後端核心技術
+- **`GET /api/stream`**
+  - **說明:** 建立 Server-Sent Events (SSE) 連線，用於即時接收新訊息和清除通知。
+  - **回應類型:** `text/event-stream`
+  - **事件 (Events):**
+    - `event: new_message`
+      `data: {"text": "新訊息內容", "time": "訊息時間"}`
+    - `event: clear_message`
+      `data: {}`
 
-使用 Python 搭配 FastAPI 框架開發。
+## 測試
 
-#### 即時聊天室系統
+在開發過程中，我們採用以下測試方法確保功能正常運作：
 
-核心技術：SSE（Server-Sent Events）。
+- **手動功能測試:**
 
-<h4> 訊息處理流程</h4>
- 提交與驗證 (POST /api/message)： 接收前端發送的訊息，進行空值及長度（< 100 字）驗證。
+  - 前端各功能點的互動體驗測試。
+  - 跨瀏覽器相容性簡易檢查 (主要在 Chrome 開發，確保在 Firefox、Safari 等瀏覽器上可用)。
+  - 行動裝置響應式佈局測試。
 
-<h4>暫存 (deque)</h4>
- 驗證通過的訊息附加台北時區時間戳後，存入伺服器記憶體中的 deque (最多 50 則)。
-
-<h4>讀取 (GET /api/messages)</h4>
- 提供 API 供前端一次性獲取當前所有暫存訊息。
-
-<h4>即時廣播 (SSE - GET /api/stream) </h4>
-利用 SSE（Server-Sent Events），當有新訊息儲存後，主動將訊息推送給所有透過 /api/stream 連線的客戶端。
-
-<h4>跨日清理</h4> 內建基於台北時區的背景排程任務，每日跨日時自動清空 deque 中的訊息，並透過 SSE 發送清除指令。
-
-### 聊天室 API 端點
-
-- POST /api/message： 發布一則新訊息。
-- GET /api/messages： 取得目前儲存的所有訊息列表。
-- GET /api/stream： 建立 SSE 連線，用於接收新訊息推送及清除通知。
-
-### 部署
-
-- 前端靜態網頁部署於 GitHub Pages。
-- 後端應用程式部署於 Render。
-
-## 任務分工
-
-- 丁綾葳（組長）：聊天室 API、前後端上線。
-
-- 邵佳渝：版面配置規劃、畫面渲染。
-
-- 蕭郁蓁：氣象資料處理、前後端串接、README 撰寫。
+- **API 測試:**
+  - 使用 curl 命令行工具對所有後端 API 端點進行基本功能驗證。
+  - 檢測邊界條件如空訊息處理、長訊息限制等。
